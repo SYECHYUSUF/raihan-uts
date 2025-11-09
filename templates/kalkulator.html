@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Kalkulator Volume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+      @keyframes gradient-pan {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .glass-input {
+        background-color: rgba(255, 255, 255, 0.1); 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
+        backdrop-filter: blur(10px); 
+        -webkit-backdrop-filter: blur(10px); 
+        color: white;
+        transition: all 0.3s ease-in-out;
+      }
+      .glass-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .glass-input:focus {
+        background-color: rgba(255, 255, 255, 0.2); 
+        border-color: rgba(255, 255, 255, 0.5); 
+        box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.5); 
+      }
+      .dark .glass-input {
+        background-color: rgba(0, 0, 0, 0.2); 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        color: #e2e8f0; 
+      }
+      .dark .glass-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .dark .glass-input:focus {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .glass-select-wrapper {
+          position: relative;
+      }
+      .glass-select-wrapper::after {
+          content: '▼'; 
+          position: absolute;
+          right: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 0.8em;
+          transition: color 0.3s ease-in-out;
+      }
+      .dark .glass-select-wrapper::after {
+          color: rgba(255, 255, 255, 0.5);
+      }
+      .glass-select {
+          appearance: none; 
+          -webkit-appearance: none;
+          background-image: none; 
+          padding-right: 2.5rem; 
+      }
+      .glass-select:focus + .glass-select-wrapper::after {
+          color: white;
+      }
+      .dark .glass-select:focus + .glass-select-wrapper::after {
+          color: #e2e8f0;
+      }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+
+<body class="flex items-center justify-center min-h-screen py-12 
+             bg-gradient-to-br from-purple-600 via-indigo-700 to-purple-800
+             dark:from-[#1A1137] dark:via-[#2F1F5A] dark:to-[#4A377D]
+             bg-[length:200%_200%] animate-[gradient-pan_15s_ease_infinite]
+             transition-all duration-500 ease-in-out">
+
+    
+<button id="theme-toggle" type="button" class="fixed top-6 right-6 p-2 rounded-lg 
+                                                    text-white/70 hover:text-white dark:text-gray-400 dark:hover:text-white 
+                                                    hover:bg-white/20 dark:hover:bg-gray-700/50 
+                                                    focus:outline-none focus:ring-2 focus:ring-white/30 dark:focus:ring-gray-600 
+                                                    transition-all duration-300 transform hover:scale-110"
+                                                    data-aos="fade-left" data-aos-delay="200">
+        <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+        <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-1.646 5.646a1 1 0 01-1.414 0l-.707-.707a1 1 0 111.414-1.414l.707.707a1 1 0 010 1.414zM4.95 6.05a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.05 15.05a1 1 0 010-1.414l.707.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM4.354 4.354a1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414l-.707-.707a1 1 0 010-1.414z"></path></svg>
+    </button>
+    
+    <div class="w-full max-w-md bg-white/10 dark:bg-gray-800/40 rounded-xl shadow-2xl overflow-hidden 
+                border border-white/20 dark:border-gray-700
+                transition-all duration-300 hover:shadow-3xl backdrop-blur-xl"
+                data-aos="fade-up" data-aos-duration="1000">
+        
+        <div class="p-6 bg-purple-600 dark:bg-[#4A377D] text-white"
+             data-aos="fade-up" data-aos-delay="300">
+            <h2 class="text-3xl font-bold text-center flex items-center justify-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 3h.008v.008H8.25v-.008Zm0 3h.008v.008H8.25v-.008Zm3-6h.008v.008H11.25v-.008Zm0 3h.008v.008H11.25v-.008Zm0 3h.008v.008H11.25v-.008Zm3-6h.008v.008H14.25v-.008Zm0 3h.008v.008H14.25v-.008Zm0 3h.008v.008H14.25v-.008Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M3 3.75A.75.75 0 0 1 3.75 3h16.5a.75.75 0 0 1 .75.75v16.5a.75.75 0 0 1-.75.75H3.75a.75.75 0 0 1-.75-.75V3.75Z" /></svg>
+                <span>Kalkulator Volume</span>
+            </h2>
+        </div>
+
+        <form method="POST" action="{{ url_for('kalkulator') }}" id="kalkulator-form" class="p-8 space-y-6">
+            
+            <div data-aos="fade-up" data-aos-delay="400">
+                <label for="bangun_ruang" class="block text-sm font-medium text-white dark:text-gray-300 mb-2">
+                    Pilih Bangun Ruang
+                </label>
+                <div class="glass-select-wrapper">
+                    <select id="bangun_ruang" name="bangun_ruang"
+                            class="w-full px-4 py-3 glass-input glass-select rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500">
+                        <option value="Tabung">Tabung (Cylinder)</option>
+                        <option value="Kerucut">Kerucut (Cone)</option>
+                        <option value="Bola">Bola (Sphere)</option>
+                        <option value="Kubus">Kubus (Cube)</option>
+                        <option value="Balok">Balok (Cuboid)</option>
+                        <option value="Limas Segiempat">Limas Segiempat (Pyramid)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="500">
+                <label id="var1_label" for="var1" class="block text-sm font-medium text-white dark:text-gray-300 mb-2">
+                    Jari-jari
+                </label>
+                <input type="text" id="var1" name="var1" required
+                       placeholder="Masukkan nilai..."
+                       class="w-full px-4 py-3 glass-input rounded-lg shadow-sm">
+            </div>
+            
+            <div id="var2_div" data-aos="fade-up" data-aos-delay="600">
+                <label id="var2_label" for="var2" class="block text-sm font-medium text-white dark:text-gray-300 mb-2">
+                    Tinggi
+                </label>
+                <input type="text" id="var2_input" name="var2" required
+                       placeholder="Masukkan nilai..."
+                       class="w-full px-4 py-3 glass-input rounded-lg shadow-sm">
+            </div>
+
+            <div id="var3_div" style="display: none;" data-aos="fade-up" data-aos-delay="700"> 
+                <label id="var3_label" for="var3_input" class="block text-sm font-medium text-white dark:text-gray-300 mb-2">
+                    Input 3
+                </label>
+                <input type="text" id="var3_input" name="var3"
+                       placeholder="Masukkan nilai..."
+                       class="w-full px-4 py-3 glass-input rounded-lg shadow-sm">
+            </div>
+
+            <button type="submit"
+                    id="tombol-hitung"
+                    class="w-full px-6 py-3 
+                           bg-purple-600 hover:bg-purple-700 
+                           dark:bg-purple-600 dark:hover:bg-purple-500
+                           text-white font-bold text-lg rounded-lg shadow-md 
+                           transition duration-300 ease-in-out transform hover:-translate-y-1"
+                           data-aos="fade-up" data-aos-delay="800">
+                Hitung
+            </button>
+        </form>
+
+        <hr class="border-white/20 dark:border-gray-700">
+
+        <div class="p-6 text-center bg-white/5 dark:bg-gray-800/20 transition-colors duration-300"
+             data-aos="fade-up" data-aos-delay="900">
+            <a href="{{ url_for('riwayat') }}" 
+               class="inline-flex items-center justify-center space-x-2 px-6 py-3 
+                      bg-gray-600 hover:bg-gray-700 
+                      dark:bg-gray-700 dark:hover:bg-gray-600
+                      text-white font-semibold rounded-lg shadow-md
+                      transition duration-300 transform hover:scale-105">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>
+                <span>Lihat Riwayat</span>
+            </a>
+        </div>
+        
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        var themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.theme === 'dark') {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const select = document.getElementById('bangun_ruang');
+            const var1Label = document.getElementById('var1_label');
+            
+            const var2Div = document.getElementById('var2_div');
+            const var2Label = document.getElementById('var2_label');
+            const var2Input = document.getElementById('var2_input');
+            
+            const var3Div = document.getElementById('var3_div');
+            const var3Label = document.getElementById('var3_label');
+            const var3Input = document.getElementById('var3_input');
+
+            function updateForm() {
+                const selectedValue = select.value;
+
+                var2Div.style.display = 'none';
+                var2Input.removeAttribute('required');
+                
+                var3Div.style.display = 'none';
+                var3Input.removeAttribute('required');
+
+                if (selectedValue === 'Tabung' || selectedValue === 'Kerucut') {
+                    var1Label.textContent = 'Jari-jari';
+                    
+                    var2Div.style.display = 'block';
+                    var2Label.textContent = 'Tinggi';
+                    var2Input.setAttribute('required', 'required');
+
+                } else if (selectedValue === 'Bola') {
+                    var1Label.textContent = 'Jari-jari';
+                    
+
+                } else if (selectedValue === 'Kubus') {
+                    var1Label.textContent = 'Sisi';
+                
+                } else if (selectedValue === 'Balok') {
+                    var1Label.textContent = 'Panjang';
+                    
+                    var2Div.style.display = 'block';
+                    var2Label.textContent = 'Lebar';
+                    var2Input.setAttribute('required', 'required');
+                    
+                    var3Div.style.display = 'block';
+                    var3Label.textContent = 'Tinggi';
+                    var3Input.setAttribute('required', 'required');
+                
+                } else if (selectedValue === 'Limas Segiempat') {
+                    var1Label.textContent = 'Panjang Alas';
+                    
+                    var2Div.style.display = 'block';
+                    var2Label.textContent = 'Lebar Alas';
+                    var2Input.setAttribute('required', 'required');
+                    
+                    var3Div.style.display = 'block';
+                    var3Label.textContent = 'Tinggi Limas';
+                    var3Input.setAttribute('required', 'required');
+                }
+            }
+            
+            select.addEventListener('change', updateForm);
+            updateForm();
+        });
+    </script>
+    
+    <script>
+        document.getElementById('kalkulator-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            const tombolHitung = document.getElementById('tombol-hitung');
+            tombolHitung.textContent = 'Menghitung...'; 
+            tombolHitung.disabled = true;
+
+            const formData = new FormData(this);
+
+            fetch("{{ url_for('kalkulator') }}", {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    let riwayat = JSON.parse(localStorage.getItem('riwayatPerhitungan')) || [];
+                    riwayat.unshift(data.data);
+                    localStorage.setItem('riwayatPerhitungan', JSON.stringify(riwayat));
+                    window.location.href = "{{ url_for('riwayat') }}";
+                } else {
+                    alert('Terjadi error: ' + data.message);
+                    tombolHitung.textContent = 'Hitung';
+                    tombolHitung.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Tidak bisa terhubung ke server.');
+                tombolHitung.textContent = 'Hitung';
+                tombolHitung.disabled = false;
+            });
+        });
+    </script>
+
+</body>
+</html> 

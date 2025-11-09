@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id" class="dark"> 
+<head>
+    <meta charset="UTF-8">
+    <title>Halaman Utama - Program Volume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+      @keyframes gradient-pan {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+
+<body class="flex items-center justify-center min-h-screen 
+             bg-gradient-to-br from-purple-600 via-indigo-700 to-purple-800
+             dark:from-[#1A1137] dark:via-[#2F1F5A] dark:to-[#4A377D]
+             bg-[length:200%_200%] animate-[gradient-pan_15s_ease_infinite]
+             transition-all duration-500 ease-in-out">
+    
+    
+<button id="theme-toggle" type="button" class="fixed top-6 right-6 p-2 rounded-lg 
+                                                    text-white/70 hover:text-white dark:text-gray-400 dark:hover:text-white 
+                                                    hover:bg-white/20 dark:hover:bg-gray-700/50 
+                                                    focus:outline-none focus:ring-2 focus:ring-white/30 dark:focus:ring-gray-600 
+                                                    transition-all duration-300 transform hover:scale-110"
+                                                    data-aos="fade-left" data-aos-delay="200">
+        <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+        <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l-.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-1.646 5.646a1 1 0 01-1.414 0l-.707-.707a1 1 0 111.414-1.414l.707.707a1 1 0 010 1.414zM4.95 6.05a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.05 15.05a1 1 0 010-1.414l.707.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM4.354 4.354a1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414l-.707-.707a1 1 0 010-1.414z"></path></svg>
+    </button>
+
+    <div class="w-full max-w-lg p-10 rounded-2xl shadow-2xl 
+                bg-white/10 backdrop-blur-xl border border-white/20 
+                dark:bg-gray-800/40 dark:border-gray-700/50
+                text-center transition-all duration-500 ease-in-out hover:shadow-2xl"
+                data-aos="fade-up" data-aos-duration="1000">
+        
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 [text-shadow:_0_3px_5px_rgb(0_0_0_/_0.4)]"
+            data-aos="fade-up" data-aos-delay="300">
+            Program Menghitung Volume
+        </h1>
+        
+        <div class="mb-10 p-4 bg-white/5 rounded-xl shadow-inner border border-white/10 dark:bg-gray-700/30 dark:border-gray-600/50"
+             data-aos="fade-up" data-aos-delay="500">
+            <p class="text-2xl font-semibold text-white/95">
+                MUHAMMAD RAIHAN BAHRAN
+            </p>
+            <p class="text-lg text-white/80 font-mono tracking-wide mt-1">
+                TEKOM E | 250210502046
+            </p>
+        </div>
+
+        <a href="{{ url_for('kalkulator') }}" 
+           class="inline-block w-full px-6 py-4 
+                  bg-purple-600 text-white 
+                  dark:bg-purple-600 dark:text-white
+                  font-bold text-lg rounded-xl shadow-lg
+                  transition duration-300 ease-in-out 
+                  hover:bg-purple-700
+                  dark:hover:bg-purple-500
+                  transform hover:-translate-y-1 hover:scale-105"
+                  data-aos="fade-up" data-aos-delay="700">
+            Mulai Hitung
+        </a>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        var themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.theme === 'dark') {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+    </script>
+</body>
+</html> 
