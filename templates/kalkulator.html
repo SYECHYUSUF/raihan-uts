@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Kalkulator Volume</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
       @keyframes gradient-pan {
@@ -78,7 +78,7 @@
     </script>
 </head>
 
-<body class="flex items-center justify-center min-h-screen py-12 
+<body class="flex items-center justify-center min-h-screen py-12 px-4
              bg-gradient-to-br from-purple-600 via-indigo-700 to-purple-800
              dark:from-[#1A1137] dark:via-[#2F1F5A] dark:to-[#4A377D]
              bg-[length:200%_200%] animate-[gradient-pan_15s_ease_infinite]
@@ -108,7 +108,7 @@
             </h2>
         </div>
 
-        <form method="POST" action="{{ url_for('kalkulator') }}" id="kalkulator-form" class="p-8 space-y-6">
+        <form method="POST" action="{{ url_for('kalkulator') }}" id="kalkulator-form" class="p-6 md:p-8 space-y-6">
             
             <div data-aos="fade-up" data-aos-delay="400">
                 <label for="bangun_ruang" class="block text-sm font-medium text-white dark:text-gray-300 mb-2">
@@ -313,4 +313,4 @@
     </script>
 
 </body>
-</html> 
+</html>
